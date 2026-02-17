@@ -33,7 +33,7 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text('Daftar', style: TextStyle(color: Colors.white)),
+        title: const Text('Login Akun', style: TextStyle(color: Colors.white)),
       ),
 
       body: FutureBuilder(
@@ -67,16 +67,23 @@ class _LoginViewState extends State<LoginView> {
                     onPressed: () async {
                       final email = _email.text;
                       final password = _password.text;
+                      try {
+                        final userCredential = await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                              email: email,
+                              password: password,
+                            );
 
-                      final userCredential = await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                            email: email,
-                            password: password,
-                          );
-
-                      print(userCredential);
+                        print(userCredential);
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          print("user tidak ditemukan!");
+                        } else if (e.code == 'wrong-password') {
+                          print("password salah!");
+                        }
+                      }
                     },
-                    child: const Text('Daftar'),
+                    child: const Text('Login'),
                   ),
                 ],
               );
