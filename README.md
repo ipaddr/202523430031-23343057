@@ -1,17 +1,24 @@
-# mynotes
+# Tugas Minggu 1
 
-A new Flutter project.
+## Ringkasan Materi & Implementasi
 
-## Getting Started
+Pada minggu pertama, tugas yang telah dilakukan meliputi:
 
-This project is a starting point for a Flutter application.
+- Pengenalan dasar Flutter
+- Setup dan konfigurasi project Flutter
+- Instalasi dependency yang dibutuhkan
+- Setup Firebase sebagai backend
+- Implementasi Basic Registration Screen
+- Implementasi Login View
+- Pemisahan inisialisasi aplikasi dari halaman Login dan Register
 
-A few resources to get you started if this is your first Flutter project:
+## Deskripsi Singkat
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Pada tugas ini dilakukan pembuatan project Flutter awal yang terintegrasi dengan Firebase.  
+Aplikasi memiliki fitur autentikasi sederhana berupa halaman registrasi dan login, serta struktur project yang sudah dipisahkan antara proses inisialisasi aplikasi dan tampilan autentikasi untuk menjaga kerapihan dan skalabilitas kode.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Hasil Implementasi
+
+Akun berhasil dibuat dan dapat diverifikasi pada menu Authentication di Firebase Console. Berikut merupakan screenshot data akun yang telah terdaftar:
+
+<img src="https://github.com/user-attachments/assets/8a3747fe-b68d-4ed4-87b4-91f358a0c3bf" width="800">
