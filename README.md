@@ -25,6 +25,3 @@ UI beserta seluruh fungsinya telah berhasil diimplementasikan, dan semua unit te
   <img src="https://github.com/user-attachments/assets/741bc6ee-db71-4403-929b-de6c8dca472f" width="250"/>
   <img src="https://github.com/user-attachments/assets/21ba5a44-423b-4f34-92a4-0d255c6f04d5" width="250"/>
 </p>
-
-
-
