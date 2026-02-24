@@ -15,7 +15,7 @@ void main() {
         useMaterial3: false,
         primarySwatch: Colors.blue,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.purple,
           foregroundColor: Colors.white,
         ),
       ),
