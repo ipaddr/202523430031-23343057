@@ -1,6 +1,5 @@
 import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/crud/notes_service.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 
 class NewNoteView extends StatefulWidget {
