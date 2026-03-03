@@ -5,6 +5,7 @@ import 'package:mynotes/views/notes_view.dart';
 import 'package:mynotes/views/register_view.dart';
 import 'package:mynotes/views/verify_email_view.dart';
 import 'package:flutter/material.dart';
+import 'package:mynotes/views/new_notes_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,8 @@ void main() {
         notesRoute: (context) => const NotesView(),
         verifyEmailRoute: (context) => const VerifyEmailView(),
 
-        newNoteRoute: (context) => const NotesView(),
+        // newNoteRoute: (context) => const NotesView(),
+        newNoteRoute: (context) => const NewNoteView(),
       },
     ),
   );

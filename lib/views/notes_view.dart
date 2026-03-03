@@ -1,7 +1,7 @@
-import 'package:mynotes/constants/routes.dart';
-import 'package:mynotes/enums/menu_action.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/crud/notes_service.dart';
+import 'package:mynotes/enums/menu_action.dart';
+import 'package:mynotes/constants/routes.dart';
 import 'package:flutter/material.dart';
 
 class NotesView extends StatefulWidget {
@@ -73,6 +73,7 @@ class _NotesViewState extends State<NotesView> {
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
+                    case ConnectionState.active:
                       return const Text('Menunggu notes...');
                     default:
                       return const CircularProgressIndicator();

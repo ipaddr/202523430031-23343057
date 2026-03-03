@@ -122,12 +122,12 @@ class NotesService {
     await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
 
-    // Make sure owner exists in the database with the correct id
+    // owner exists in the database with the correct id
     final dbUser = await getUser(email: owner.email);
     if (dbUser != owner) throw CouldNotFindUser();
 
     const text = '';
-    // Create the note
+    // create the note
     final noteId = await db.insert(noteTable, {
       userIdColumn: owner.id,
       textColumn: text,
@@ -232,8 +232,10 @@ class NotesService {
       final dbPath = join(docsPath.path, dbName);
       final db = await openDatabase(dbPath);
       _db = db;
+
       // Create user table
       await db.execute(createUserTable);
+
       // Create note table
       await db.execute(createNoteTable);
       await _cacheNotes();
@@ -295,7 +297,7 @@ class DatabaseNote {
   int get hashCode => id.hashCode;
 }
 
-const dbName = 'db_belajarflutter.db';
+const dbName = 'mynotes.db';
 const noteTable = 'note';
 const userTable = 'user';
 const idColumn = "id";
