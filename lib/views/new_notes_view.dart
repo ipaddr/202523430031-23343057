@@ -89,6 +89,7 @@ class _NewNoteViewState extends State<NewNoteView> {
                   hintText: 'Ketik note di sini...',
                 ),
               );
+
             default:
               return const CircularProgressIndicator();
           }
