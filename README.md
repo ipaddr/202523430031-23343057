@@ -17,4 +17,15 @@ Pada minggu ini pengembangan difokuskan pada penyempurnaan fitur utama aplikasi 
 
 ## Hasil Implementasi
 
-Seluruh fitur CRUD Notes telah berhasil berjalan dengan baik termasuk integrasi real-time dengan Cloud Firestore, dan aplikasi dapat digunakan untuk mengelola catatan secara penuh tanpa perlu memuat ulang halaman.
+Semua fitur CRUD pada Notes sudah berfungsi dengan optimal, termasuk integrasi real-time dengan Cloud Firestore serta penyimpanan lokal, sehingga aplikasi dapat digunakan untuk mengelola dan membagikan catatan dengan lancar:
+<img src="https://github.com/user-attachments/assets/e3492354-da01-4df4-babc-819a8509f380" width="800">
+
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/7cd956c4-01eb-4685-bf37-6a0755c88f00" width="250"/>
+  <img src="https://github.com/user-attachments/assets/46d1e8df-a005-466a-96e3-bf840f01372d" width="250"/>
+  <img src="https://github.com/user-attachments/assets/5ae6a1d0-ee30-482b-97c6-a23ba9863a53" width="250"/>
+</p>
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/eb7d963c-dfe8-4493-9964-1e22cbda8f20" width="250"/>
+  <img src="https://github.com/user-attachments/assets/ef16bf41-925c-405f-87e2-7dae207ec9b7" width="250"/>
+</p>
