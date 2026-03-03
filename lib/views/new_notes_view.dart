@@ -57,6 +57,7 @@ class _NewNoteViewState extends State<NewNoteView> {
     final note = _note;
     final text = _textController.text;
     if (note != null && text.isNotEmpty) {
+      // await _notesService.updateNotes(note: note, text: text);
       await _notesService.updateNotes(note: note, text: text);
     }
   }
