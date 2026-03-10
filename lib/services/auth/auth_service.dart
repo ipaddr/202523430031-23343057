@@ -5,7 +5,6 @@ import 'package:mynotes/services/auth/firebase_auth_provider.dart';
 class AuthService implements AuthProvider {
   final AuthProvider provider;
   const AuthService(this.provider);
-
   factory AuthService.firebase() => AuthService(FirebaseAuthProvider());
 
   @override
@@ -25,8 +24,12 @@ class AuthService implements AuthProvider {
   Future<void> logOut() => provider.logOut();
 
   @override
-  Future<void> sendEmailVerification() => provider.sendEmailVerification();
+  Future<AuthUser> sendEmailVerification() => provider.sendEmailVerification();
 
   @override
   Future<void> initialize() => provider.initialize();
+
+  @override
+  Future<void> sendPasswordReset({required String toEmail}) =>
+      provider.sendPasswordReset(toEmail: toEmail);
 }
