@@ -41,4 +41,3 @@ Aplikasi kini telah menggunakan BLoC untuk seluruh proses autentikasi dan memili
   <img src="https://github.com/user-attachments/assets/26782478-d7d9-4781-b4fe-f60301992148" width="250"/>
   <img src="https://github.com/user-attachments/assets/26492702-618d-4a3a-b8e8-beb20079c2ea" width="250"/>
 </p>
-
