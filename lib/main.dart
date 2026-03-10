@@ -13,6 +13,7 @@ import 'package:mynotes/views/verify_email_view.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/views/notes/notes_view.dart';
 import 'package:mynotes/views/notes/create_update_note_view.dart';
+import 'package:mynotes/helpers/loading/loading_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,9 +22,9 @@ void main() {
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: false,
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.purple,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.purple,
           foregroundColor: Colors.white,
         ),
       ),
@@ -44,7 +45,17 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<AuthBloc>().add(const AuthEventInitialize());
-    return BlocBuilder<AuthBloc, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state.isLoading) {
+          LoadingScreen().show(
+            context: context,
+            text: state.loadingText ?? 'Please wait a moment',
+          );
+        } else {
+          LoadingScreen().hide();
+        }
+      },
       builder: (context, state) {
         if (state is AuthStateLoggedIn) {
           return const NotesView();
