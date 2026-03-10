@@ -37,31 +37,35 @@ class _RegisterViewState extends State<RegisterView> {
       listener: (context, state) async {
         if (state is AuthStateRegistering) {
           if (state.exception is WeakPasswordAuthException) {
-            await showErrorDialog(context, 'Weak password');
+            await showErrorDialog(context, 'Kata sandi lemah');
           } else if (state.exception is EmailAlreadyInUseAuthException) {
-            await showErrorDialog(context, 'Email already in use');
+            await showErrorDialog(context, 'Email sudah digunakan');
           } else if (state.exception is GenericAuthException) {
-            await showErrorDialog(context, 'Failed to register');
+            await showErrorDialog(context, 'Gagal mendaftar');
           } else if (state.exception is InvalidEmailAuthException) {
-            await showErrorDialog(context, 'Invalid Email');
+            await showErrorDialog(context, 'Email tidak valid');
           }
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Register')),
+        appBar: AppBar(title: const Text('Daftar')),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Enter your email and password to see your notes!'),
+              const Text(
+                'Masukkan email dan kata sandi Anda untuk melihat catatan!',
+              ),
               TextField(
                 controller: _email,
                 enableSuggestions: false,
                 autocorrect: false,
                 autofocus: true,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(hintText: 'Enter your email here'),
+                decoration: InputDecoration(
+                  hintText: 'Masukkan email Anda di sini',
+                ),
               ),
               TextField(
                 controller: _password,
@@ -69,7 +73,7 @@ class _RegisterViewState extends State<RegisterView> {
                 enableSuggestions: false,
                 autocorrect: false,
                 decoration: InputDecoration(
-                  hintText: 'Enter your password here',
+                  hintText: 'Masukkan kata sandi Anda di sini',
                 ),
               ),
               Center(
@@ -83,13 +87,13 @@ class _RegisterViewState extends State<RegisterView> {
                           AuthEventRegister(email: email, password: password),
                         );
                       },
-                      child: const Text('Register'),
+                      child: const Text('Daftar'),
                     ),
                     TextButton(
                       onPressed: () {
                         context.read<AuthBloc>().add(const AuthEventLogout());
                       },
-                      child: Text('Already registered? Login here!'),
+                      child: Text('Sudah terdaftar? Masuk di sini!'),
                     ),
                   ],
                 ),

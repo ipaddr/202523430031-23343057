@@ -1,4 +1,3 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mynotes/constants/routes.dart';
 
@@ -51,7 +50,7 @@ class HomePage extends StatelessWidget {
         if (state.isLoading) {
           LoadingScreen().show(
             context: context,
-            text: state.loadingText ?? 'Please wait a moment',
+            text: state.loadingText ?? 'Mohon tunggu sebentar...',
           );
         } else {
           LoadingScreen().hide();

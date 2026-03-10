@@ -14,14 +14,14 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Verify Email')),
+      appBar: AppBar(title: const Text('Verifikasi Email')),
       body: Column(
         children: [
           const Text(
-            'We have sent you an email verification, please open it to verify your account',
+            'Kami telah mengirimkan email verifikasi, silakan buka untuk memverifikasi akun Anda',
           ),
           const Text(
-            'If you haven\'t received a verification email yet, press the button below',
+            'Jika Anda belum menerima email verifikasi, tekan tombol di bawah ini',
           ),
           TextButton(
             onPressed: () async {
@@ -29,13 +29,13 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                 const AuthEventSendEmailVerification(),
               );
             },
-            child: const Text('Send email verification'),
+            child: const Text('Kirim verifikasi email'),
           ),
           TextButton(
             onPressed: () async {
               context.read<AuthBloc>().add(const AuthEventLogout());
             },
-            child: const Text('Restart'),
+            child: const Text('Mulai ulang'),
           ),
         ],
       ),

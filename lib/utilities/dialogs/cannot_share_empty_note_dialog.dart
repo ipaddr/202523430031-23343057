@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 Future<void> showCannotShareEmptyNoteDialog(BuildContext context) {
   return showGenericDialog<void>(
     context: context,
-    title: 'Sharing',
-    content: 'You cannot share an empty note. Please write something to share.',
+    title: 'Berbagi',
+    content:
+        'Anda tidak dapat membagikan catatan kosong. Silakan tulis sesuatu untuk dibagikan.',
     optionsBuilder: () => {'OK': null},
   );
 }

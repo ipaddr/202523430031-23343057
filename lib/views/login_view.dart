@@ -39,30 +39,32 @@ class _LoginViewState extends State<LoginView> {
           if (state.exception is UserNotFoundAuthException) {
             showErrorDialog(
               context,
-              'Cannot find a user with the entered credentials!',
+              'Pengguna tidak ditemukan dengan kredensial yang dimasukkan!',
             );
           } else if (state.exception is WrongPasswordAuthException) {
-            showErrorDialog(context, 'Wrong credentials');
+            showErrorDialog(context, 'Kredensial salah');
           } else if (state.exception is GenericAuthException) {
-            showErrorDialog(context, 'Authentication error');
+            showErrorDialog(context, 'Kesalahan autentikasi');
           }
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Login')),
+        appBar: AppBar(title: const Text('Masuk')),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               const Text(
-                'Please log in to your account in order to interact with and create notes.',
+                'Silakan masuk ke akun Anda agar dapat berinteraksi dan membuat catatan.',
               ),
               TextField(
                 controller: _email,
                 enableSuggestions: false,
                 autocorrect: false,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(hintText: 'Enter your email here'),
+                decoration: InputDecoration(
+                  hintText: 'Masukkan email Anda di sini',
+                ),
               ),
               TextField(
                 controller: _password,
@@ -70,7 +72,7 @@ class _LoginViewState extends State<LoginView> {
                 enableSuggestions: false,
                 autocorrect: false,
                 decoration: InputDecoration(
-                  hintText: 'Enter your password here',
+                  hintText: 'Masukkan kata sandi Anda di sini',
                 ),
               ),
               TextButton(
@@ -81,19 +83,19 @@ class _LoginViewState extends State<LoginView> {
                     AuthEventLogin(email: email, password: password),
                   );
                 },
-                child: const Text('Login'),
+                child: const Text('Masuk'),
               ),
               TextButton(
                 onPressed: () {
                   context.read<AuthBloc>().add(const AuthEventForgotPassword());
                 },
-                child: const Text('I Forgot my password'),
+                child: const Text('Lupa kata sandi?'),
               ),
               TextButton(
                 onPressed: () {
                   context.read<AuthBloc>().add(const AuthEventShouldRegister());
                 },
-                child: const Text('Not registered yet? Register here!'),
+                child: const Text('Belum terdaftar? Daftar di sini!'),
               ),
             ],
           ),

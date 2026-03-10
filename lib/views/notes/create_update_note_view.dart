@@ -86,7 +86,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Note'),
+        title: const Text('Catatan Baru'),
         actions: [
           IconButton(
             onPressed: () async {
@@ -112,7 +112,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: const InputDecoration(
-                  hintText: 'Ketik note di sini...',
+                  hintText: 'Mulai mengetik catatan Anda di sini...',
                 ),
               );
             default:

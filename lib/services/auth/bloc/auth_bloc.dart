@@ -85,7 +85,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         const AuthStateLoggedOut(
           exception: null,
           isLoading: true,
-          loadingText: 'Please wait while I log you in...',
+          loadingText: 'Mohon tunggu selagi saya memasukkan Anda...',
         ),
       );
       await Future.delayed(const Duration(seconds: 1));

@@ -33,7 +33,7 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Notes'),
+        title: const Text('Catatan Saya'),
         actions: [
           IconButton(
             onPressed: () {
@@ -55,7 +55,7 @@ class _NotesViewState extends State<NotesView> {
               return [
                 const PopupMenuItem<menuAction>(
                   value: menuAction.logout,
-                  child: const Text('Logout'),
+                  child: const Text('Keluar'),
                 ),
               ];
             },

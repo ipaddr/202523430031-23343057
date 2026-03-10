@@ -4,9 +4,9 @@ import 'package:mynotes/utilities/dialogs/generic_dialog.dart';
 Future<void> showPasswordResetSentDialog(BuildContext context) {
   return showGenericDialog<void>(
     context: context,
-    title: 'Password Reset',
+    title: 'Atur Ulang Kata Sandi',
     content:
-        'We have now sent you a password reset link. Please check your email for more information...',
+        'Kami telah mengirimkan tautan pengaturan ulang kata sandi ke email Anda. Silakan periksa email Anda untuk informasi lebih lanjut.',
     optionsBuilder: () => {'OK': null},
   );
 }

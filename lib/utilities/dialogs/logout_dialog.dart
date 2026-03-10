@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 Future<bool> showlogoutDialog(BuildContext context) {
   return showGenericDialog<bool>(
     context: context,
-    title: "Log out",
-    content: "Are you sure you want to sign out?",
-    optionsBuilder: () => {"Cancel": false, "Log out": true},
+    title: "Keluar",
+    content: "Apakah Anda yakin ingin keluar?",
+    optionsBuilder: () => {"Batal": false, "Keluar": true},
   ).then((value) => value ?? false);
 }

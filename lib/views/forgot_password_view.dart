@@ -40,19 +40,19 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           if (state.exception != null) {
             await showErrorDialog(
               context,
-              'We could not process your request. Please make sure you are a registered user, or if not, register a user now by going one back step.',
+              'Kami tidak dapat memproses permintaan Anda. Pastikan Anda adalah pengguna terdaftar, atau jika tidak, daftar sekarang dengan kembali ke langkah sebelumnya.',
             );
           }
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Forgot Password')),
+        appBar: AppBar(title: const Text('Lupa Kata Sandi')),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               const Text(
-                'If you forgot your password, simply enter your email and we will send you a password reset link.',
+                'Jika Anda lupa kata sandi, cukup masukkan email Anda dan kami akan mengirimkan tautan atur ulang kata sandi.',
               ),
               TextField(
                 keyboardType: TextInputType.emailAddress,
@@ -60,7 +60,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 autofocus: true,
                 controller: _controller,
                 decoration: const InputDecoration(
-                  hintText: 'Your email address...',
+                  hintText: 'Alamat email Anda...',
                 ),
               ),
               TextButton(
@@ -70,13 +70,13 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                     AuthEventForgotPassword(email: email),
                   );
                 },
-                child: const Text('Send me the reset password link'),
+                child: const Text('Kirimkan tautan atur ulang kata sandi'),
               ),
               TextButton(
                 onPressed: () {
                   context.read<AuthBloc>().add(AuthEventLogout());
                 },
-                child: const Text('Back to login page'),
+                child: const Text('Kembali ke halaman masuk'),
               ),
             ],
           ),
