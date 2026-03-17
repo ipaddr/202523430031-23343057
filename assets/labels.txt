@@ -1,20 +1,20 @@
-Aceh_Pintu_Aceh
-Bali_Barong
-Bali_Merak
-DKI_Ondel_Ondel
-Jawa_Barat_Megamendung
-Jawa_Timur_Pring
-Kalimantan_Dayak
-Lampung_Gajah
-Madura_Mataketeran
-Maluku_Pala
-NTB_Lumbung
-Papua_Asmat
-Papua_Cendrawasih
-Papua_Tifa
-Solo_Parang
-Sulawesi_Selatan_Lontara
-Sumatera_Barat_Rumah_Minang
-Sumatera_Utara_Boraspati
-Yogyakarta_Kawung
-Yogyakarta_Parang
+0 Aceh_Pintu_Aceh
+1 Bali_Barong
+2 Bali_Merak
+3 DKI_Ondel_Ondel
+4 JawaBarat_Megamendung
+5 JawaTimur_Pring
+6 Kalimantan_Dayak
+7 Lampung_Gajah
+8 Madura_Mataketeran
+9 Maluku_Pala
+10 NTB_Lumbung
+11 Papua_Asmat
+12 Papua_Cendrawasih
+13 Papua_Tifa
+14 Solo_Parang
+15 SulawesiSelatan_Lontara
+16 SumateraBarat_Rumah_Minang
+17 SumateraUtara_Boraspati
+18 Yogyakarta_Kawung
+19 Yogyakarta_Parang
