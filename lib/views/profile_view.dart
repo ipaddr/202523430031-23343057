@@ -101,13 +101,14 @@ class ProfileView extends StatelessWidget {
 
               const SizedBox(height: 32),
 
-              // statistik — total scan dari Firestore
+              // statistik - total scan dari Firestore
               if (user != null)
                 StreamBuilder<QuerySnapshot>(
                   stream: firestoreService.getUserHistoryStream(user.uid),
                   builder: (context, snapshot) {
-                    final count =
-                        snapshot.hasData ? snapshot.data!.docs.length : 0;
+                    final count = snapshot.hasData
+                        ? snapshot.data!.docs.length
+                        : 0;
                     return SizedBox(
                       width: double.infinity,
                       child: Container(
@@ -154,10 +155,8 @@ class ProfileView extends StatelessWidget {
                     onPressed: () async {
                       final shouldLogout = await showLogoutDialog(context);
                       if (shouldLogout && context.mounted) {
-                        // Panggil AuthBloc untuk logout → state jadi Unauthenticated
-                        context
-                            .read<AuthBloc>()
-                            .add(AuthLogoutRequested());
+                        // panggil AuthBloc untuk logout -> state jadi Unauthenticated
+                        context.read<AuthBloc>().add(AuthLogoutRequested());
                       }
                     },
                     icon: const Icon(Icons.logout),
