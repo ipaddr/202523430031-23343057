@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../themes.dart';
+import '../utilities/dialogs/logout_dialog.dart';
 import 'login_view.dart';
 
 class ProfileView extends StatelessWidget {
@@ -120,13 +121,17 @@ class ProfileView extends StatelessWidget {
                   boxShadow: MotifaTheme.brutalShadowSmall,
                 ),
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginView(),
-                      ),
-                    );
+                  onPressed: () async {
+                    final shouldLogout = await showLogoutDialog(context);
+                    if (shouldLogout && context.mounted) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginView(),
+                        ),
+                        (route) => false,
+                      );
+                    }
                   },
                   icon: const Icon(Icons.logout),
                   label: const Text('Keluar'),
