@@ -1,4 +1,4 @@
-# Motifa - Klasifikasi Motif Batik
+# Tugas Minggu 5: Motifa - Klasifikasi Motif Batik
 
 Motifa adalah aplikasi mobile berbasis Flutter yang dirancang untuk mengenali berbagai jenis motif batik menggunakan Machine Learning (TensorFlow Lite). Aplikasi ini mengintegrasikan layanan Firebase untuk manajemen pengguna dan penyimpanan data riwayat scan secara real-time.
 
