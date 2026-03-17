@@ -31,4 +31,18 @@ class FirestoreService {
         .orderBy('createdAt', descending: true)
         .snapshots();
   }
+
+  // menghapus data riwayat scan tertentu
+  Future<void> deleteScanHistory(String uid, String docId) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('history')
+          .doc(docId)
+          .delete();
+    } catch (e) {
+      throw Exception('Gagal menghapus riwayat scan: ${e.toString()}');
+    }
+  }
 }

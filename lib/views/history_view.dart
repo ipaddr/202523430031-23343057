@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../services/firestore_service.dart';
 import '../themes.dart';
+import '../utilities/dialogs/delete_history_dialog.dart';
 
 class HistoryView extends StatelessWidget {
   const HistoryView({super.key});
@@ -82,7 +83,8 @@ class HistoryView extends StatelessWidget {
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 24),
                   itemBuilder: (context, index) {
-                    final data = docs[index].data() as Map<String, dynamic>;
+                    final doc = docs[index];
+                    final data = doc.data() as Map<String, dynamic>;
                     final String name = data['name'] ?? '-';
                     final double accuracy =
                         (data['accuracy'] as num?)?.toDouble() ?? 0.0;
@@ -146,12 +148,25 @@ class HistoryView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          // panah aksi
-                          const Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              color: MotifaTheme.black,
+                          // tombol hapus
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: IconButton(
+                              onPressed: () async {
+                                final shouldDelete =
+                                    await showDeleteHistoryDialog(context);
+                                if (shouldDelete) {
+                                  await firestoreService.deleteScanHistory(
+                                    user.uid,
+                                    doc.id,
+                                  );
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.delete_outline,
+                                color: Colors.redAccent,
+                                size: 28,
+                              ),
                             ),
                           ),
                         ],
