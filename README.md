@@ -18,7 +18,4 @@ Masing-masing branch berisi source code berdasarkan tugas pada minggu tersebut.
 - [Minggu 2](../../tree/minggu-2)
 - [Minggu 3](../../tree/minggu-3)
 - [Minggu 4](../../tree/minggu-4)
-- [Minggu 5](../../tree/minggu-5)
-- [Minggu 6](../../tree/minggu-6)
-- [Minggu 7](../../tree/minggu-7)
-- [Minggu 8](../../tree/minggu-8)
+- [Minggu 5 Object Detection](../../tree/flutter-object-detection)
