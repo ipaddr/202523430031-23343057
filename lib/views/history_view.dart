@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../services/firestore_service.dart';
 import '../themes.dart';
 
 class HistoryView extends StatelessWidget {
@@ -6,6 +9,9 @@ class HistoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
+    final FirestoreService firestoreService = FirestoreService();
+
     return Scaffold(
       backgroundColor: MotifaTheme.backgroundWhite,
       appBar: AppBar(
@@ -26,96 +32,143 @@ class HistoryView extends StatelessWidget {
           child: Container(color: MotifaTheme.black, height: 3.0),
         ),
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(24.0),
-        itemCount: 5, // data dummy
-        separatorBuilder: (context, index) => const SizedBox(height: 24),
-        itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              color: MotifaTheme.backgroundWhite,
-              border: MotifaTheme.brutalBorder,
-              boxShadow: MotifaTheme.brutalShadowSmall,
-            ),
-            child: Row(
-              children: [
-                // gambar kecil
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: const BoxDecoration(
-                    color: MotifaTheme.lightBlue,
-                    border: Border(
-                      right: BorderSide(color: MotifaTheme.black, width: 3),
-                    ),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.image,
-                      size: 40,
-                      color: MotifaTheme.black,
-                    ),
-                  ),
-                ),
-                // detail info
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+      body: user == null
+          ? const Center(child: Text('Silakan login untuk melihat riwayat.'))
+          : StreamBuilder<QuerySnapshot>(
+              stream: firestoreService.getUserHistoryStream(user.uid),
+              builder: (context, snapshot) {
+                // loading
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                // error
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Terjadi kesalahan: ${snapshot.error}'),
+                  );
+                }
+
+                // kosong
+                final docs = snapshot.data?.docs ?? [];
+                if (docs.isEmpty) {
+                  return Center(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Batik Parang ${index + 1}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                          ),
+                        Icon(
+                          Icons.history_toggle_off,
+                          size: 80,
+                          color: MotifaTheme.black.withOpacity(0.2),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 16),
                         const Text(
-                          'Asal: Yogyakarta',
+                          'Belum ada riwayat scan.',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 18,
                             fontWeight: FontWeight.w700,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: MotifaTheme.primaryBlue,
-                            border: Border.all(color: MotifaTheme.black),
-                          ),
-                          child: const Text(
-                            'Cocok 98%',
-                            style: TextStyle(
-                              color: MotifaTheme.backgroundWhite,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 10,
-                            ),
+                            color: Colors.black45,
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ),
-                // panah aksi
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  child: const Icon(
-                    Icons.arrow_forward_ios,
-                    color: MotifaTheme.black,
-                  ),
-                ),
-              ],
+                  );
+                }
+
+                // ada data
+                return ListView.separated(
+                  padding: const EdgeInsets.all(24.0),
+                  itemCount: docs.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 24),
+                  itemBuilder: (context, index) {
+                    final data = docs[index].data() as Map<String, dynamic>;
+                    final String name = data['name'] ?? '-';
+                    final double accuracy =
+                        (data['accuracy'] as num?)?.toDouble() ?? 0.0;
+                    final Timestamp? createdAt = data['createdAt'];
+
+                    return Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        color: MotifaTheme.backgroundWhite,
+                        border: MotifaTheme.brutalBorder,
+                        boxShadow: MotifaTheme.brutalShadowSmall,
+                      ),
+                      child: Row(
+                        children: [
+                          // detail info
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    name,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  if (createdAt != null)
+                                    Text(
+                                      _formatDate(createdAt.toDate()),
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black45,
+                                      ),
+                                    ),
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: MotifaTheme.primaryBlue,
+                                      border: Border.all(
+                                        color: MotifaTheme.black,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Cocok ${(accuracy * 100).toStringAsFixed(1)}%',
+                                      style: const TextStyle(
+                                        color: MotifaTheme.backgroundWhite,
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // panah aksi
+                          const Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              color: MotifaTheme.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-          );
-        },
-      ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day.toString().padLeft(2, '0')}/'
+        '${date.month.toString().padLeft(2, '0')}/'
+        '${date.year}  '
+        '${date.hour.toString().padLeft(2, '0')}:'
+        '${date.minute.toString().padLeft(2, '0')}';
   }
 }

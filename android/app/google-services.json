@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "539520125827",
+    "project_id": "motifa-batik-84a69",
+    "storage_bucket": "motifa-batik-84a69.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539520125827:android:c46313db875d9f8a6c44b6",
+        "android_client_info": {
+          "package_name": "com.example.motifa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoYk-6vn_J9VQVoCaMoROjch12cEYqq14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

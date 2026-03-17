@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class MotifaTheme {
   // Warna
-  static const Color primaryBlue = Color(0xFF2563EB); // Vibrant blue
+  static const Color primaryBlue = Color(0xFF2563EB); // Biru cerah
   static const Color backgroundWhite = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
   
   static const Color lightBlue = Color(0xFFDBEAFE);
   static const Color yellowAccent = Color(0xFFFDE047);
 
-  // Border
+  // Garis Tepi (Border)
   static final Border brutalBorder = Border.all(
     color: black,
     width: 3.0,
