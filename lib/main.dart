@@ -9,12 +9,15 @@ import 'services/auth/bloc/auth_state.dart';
 import 'themes.dart';
 import 'views/login_view.dart';
 import 'views/main_view.dart';
+import 'tensorflow.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // memuat model sekali saja saat startup
+  await Tensorflow.loadModel();
   runApp(const MainApp());
 }
 

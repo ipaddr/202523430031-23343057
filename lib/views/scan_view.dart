@@ -22,17 +22,22 @@ class _ScanViewState extends State<ScanView> {
   @override
   void initState() {
     super.initState();
-    _loading = true;
-    Tensorflow.loadModel().then((value) {
-      if (mounted) {
-        setState(() {
-          _loading = false;
-        });
-      }
-    });
+    // model sudah dimuat di main.dart
   }
 
   void _runClassification(File imageFile) async {
+    // pastikan model sudah siap
+    if (!Tensorflow.isLoaded) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Model sedang disiapkan, silakan tunggu sebentar...')),
+        );
+        // mencoba memuat ulang jika belum siap
+        Tensorflow.loadModel();
+      }
+      return;
+    }
+
     setState(() {
       _loading = true;
     });
@@ -47,7 +52,7 @@ class _ScanViewState extends State<ScanView> {
     }
 
     // simpan hasil ke Firestore jika ada hasil dan user sudah login
-    if (result != null && result.isNotEmpty) {
+    if (result != null && result.isNotEmpty && result[0]['label'] != 'Tidak dikenali') {
       final User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         final String label = result[0]['label'] as String;
@@ -84,7 +89,6 @@ class _ScanViewState extends State<ScanView> {
 
   @override
   void dispose() {
-    Tensorflow.dispose();
     super.dispose();
   }
 
@@ -281,7 +285,7 @@ class _ScanViewState extends State<ScanView> {
                     ),
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text('Analisa motif', style: TextStyle(fontSize: 18)),
+                  child: Text('Analisa Motif', style: TextStyle(fontSize: 18)),
                 ),
               ),
             ),
