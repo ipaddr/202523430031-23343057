@@ -29,7 +29,7 @@ class ProfileView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: MotifaTheme.lightBlue,
+        backgroundColor: MotifaTheme.backgroundWhite,
         appBar: AppBar(
           title: const Text(
             'PROFIL PENGGUNA',

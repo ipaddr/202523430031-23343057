@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 
 class MotifaTheme {
   // Warna
-  static const Color primaryBlue = Color(0xFF2563EB); // Biru cerah
+  static const Color primaryBlue = Color(0xFF2563EB);
   static const Color backgroundWhite = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
-  
+
   static const Color lightBlue = Color(0xFFDBEAFE);
   static const Color yellowAccent = Color(0xFFFDE047);
+  static const Color brandGreen = Color(0xFF22C55E);
 
   // Garis Tepi (Border)
-  static final Border brutalBorder = Border.all(
-    color: black,
-    width: 3.0,
-  );
+  static final Border brutalBorder = Border.all(color: black, width: 3.0);
 
   // Bayangan
   static const List<BoxShadow> brutalShadow = [
@@ -24,7 +22,7 @@ class MotifaTheme {
       spreadRadius: 0,
     ),
   ];
-  
+
   static const List<BoxShadow> brutalShadowSmall = [
     BoxShadow(
       color: black,
@@ -43,9 +41,7 @@ class MotifaTheme {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       side: const BorderSide(color: black, width: 3),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
       elevation: 0,
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       textStyle: const TextStyle(
@@ -53,16 +49,17 @@ class MotifaTheme {
         fontSize: 16,
         letterSpacing: 1,
       ),
-    ).copyWith(
-      overlayColor: MaterialStateProperty.all(black.withOpacity(0.1)),
-    );
+    ).copyWith(overlayColor: MaterialStateProperty.all(black.withOpacity(0.1)));
   }
 
   // Gaya Input
   static InputDecoration brutalInputDecoration(String hintText) {
     return InputDecoration(
       hintText: hintText,
-      hintStyle: const TextStyle(fontWeight: FontWeight.w600, color: Colors.grey),
+      hintStyle: const TextStyle(
+        fontWeight: FontWeight.w600,
+        color: Colors.grey,
+      ),
       filled: true,
       fillColor: Colors.white,
       enabledBorder: const OutlineInputBorder(

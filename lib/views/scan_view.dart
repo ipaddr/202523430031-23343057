@@ -175,9 +175,10 @@ class _ScanViewState extends State<ScanView> {
             if (_outputs != null) ...[
               const SizedBox(height: 24),
               Container(
-                padding: const EdgeInsets.all(16),
+                width: double.infinity,
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: MotifaTheme.yellowAccent,
+                  color: MotifaTheme.brandGreen,
                   border: MotifaTheme.brutalBorder,
                   boxShadow: MotifaTheme.brutalShadowSmall,
                 ),
@@ -192,7 +193,7 @@ class _ScanViewState extends State<ScanView> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      _outputs![0]["label"],
+                      _outputs![0]['label'],
                       style: const TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 24,
