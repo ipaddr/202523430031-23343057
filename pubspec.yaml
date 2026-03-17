@@ -9,7 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  tflite_flutter: ^0.12.1
+  image_picker: ^1.2.1
+  tflite: ^1.1.2
 
 dev_dependencies:
   flutter_test:
