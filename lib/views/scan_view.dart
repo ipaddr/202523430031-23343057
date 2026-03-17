@@ -1,8 +1,64 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../themes.dart';
+import '../tensorflow.dart';
 
-class ScanView extends StatelessWidget {
+class ScanView extends StatefulWidget {
   const ScanView({super.key});
+
+  @override
+  State<ScanView> createState() => _ScanViewState();
+}
+
+class _ScanViewState extends State<ScanView> {
+  List<Map<String, dynamic>>? _outputs;
+  File? _image;
+  bool _loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loading = true;
+    Tensorflow.loadModel().then((value) {
+      if (mounted) {
+        setState(() {
+          _loading = false;
+        });
+      }
+    });
+  }
+
+  void _runClassification(File imageFile) async {
+    setState(() {
+      _loading = true;
+    });
+
+    var result = await Tensorflow.classifyImage(imageFile);
+
+    if (mounted) {
+      setState(() {
+        _loading = false;
+        _outputs = result;
+      });
+    }
+  }
+
+  pickImage(ImageSource source) async {
+    var image = await ImagePicker().pickImage(source: source);
+    if (image == null) return;
+    
+    setState(() {
+      _image = File(image.path);
+      _outputs = null;
+    });
+  }
+
+  @override
+  void dispose() {
+    Tensorflow.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,30 +105,67 @@ class ScanView extends StatelessWidget {
             ),
             const SizedBox(height: 48),
 
-            // placeholder gambar
+            // placeholder / gambar preview
             Container(
               height: 300,
               decoration: BoxDecoration(
                 color: MotifaTheme.lightBlue,
                 border: MotifaTheme.brutalBorder,
                 boxShadow: MotifaTheme.brutalShadow,
+                image: _image != null
+                    ? DecorationImage(
+                        image: FileImage(_image!),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.image_search_outlined,
-                    size: 80,
-                    color: MotifaTheme.black,
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Belum ada gambar',
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
-                  ),
-                ],
-              ),
+              child: _loading 
+                ? const Center(child: CircularProgressIndicator()) 
+                : _image == null 
+                  ? const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.image_search_outlined,
+                          size: 80,
+                          color: MotifaTheme.black,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Belum ada gambar',
+                          style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
             ),
+            
+            // hasil prediksi
+            if (_outputs != null) ...[
+              const SizedBox(height: 24),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: MotifaTheme.yellowAccent,
+                  border: MotifaTheme.brutalBorder,
+                  boxShadow: MotifaTheme.brutalShadowSmall,
+                ),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Hasil Deteksi:',
+                      style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _outputs![0]["label"],
+                      style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 24),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ],
 
             const SizedBox(height: 48),
 
@@ -85,7 +178,7 @@ class ScanView extends StatelessWidget {
                       boxShadow: MotifaTheme.brutalShadow,
                     ),
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () => pickImage(ImageSource.camera),
                       icon: const Icon(Icons.camera_alt),
                       label: const Text('Kamera'),
                       style: MotifaTheme.brutalButtonStyle(
@@ -102,7 +195,7 @@ class ScanView extends StatelessWidget {
                       boxShadow: MotifaTheme.brutalShadow,
                     ),
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () => pickImage(ImageSource.gallery),
                       icon: const Icon(Icons.photo_library),
                       label: const Text('Galeri'),
                       style: MotifaTheme.brutalButtonStyle(
@@ -123,7 +216,9 @@ class ScanView extends StatelessWidget {
                 boxShadow: MotifaTheme.brutalShadow,
               ),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: _image != null && !_loading 
+                  ? () => _runClassification(_image!) 
+                  : null,
                 style: MotifaTheme.brutalButtonStyle(
                   backgroundColor: MotifaTheme.primaryBlue,
                   foregroundColor: MotifaTheme.backgroundWhite,
@@ -140,3 +235,4 @@ class ScanView extends StatelessWidget {
     );
   }
 }
+

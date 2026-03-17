@@ -1,121 +1,81 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:tflite/tflite.dart';
+import 'package:flutter/services.dart';
+import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:image/image.dart' as img;
 
-class Tensorflow extends StatefulWidget {
-  @override
-  _TensorflowState createState() => _TensorflowState();
-}
+class Tensorflow {
+  static Interpreter? _interpreter;
+  static List<String>? _labels;
 
-class _TensorflowState extends State<Tensorflow> {
-  List? _outputs;
-  File? _image;
-  bool _loading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loading = true;
-    loadModel().then((value) {
-      setState(() {
-        _loading = false;
-      });
-    });
+  // Memuat model dari assets
+  static Future<void> loadModel() async {
+    try {
+      _interpreter = await Interpreter.fromAsset("assets/batik_model.tflite");
+      final labelData = await rootBundle.loadString("assets/labels.txt");
+      _labels = labelData.split('\n').where((s) => s.isNotEmpty).toList();
+    } catch (e) {
+      print("Error loading model: \$e");
+    }
   }
 
-  loadModel() async {
-    await Tflite.loadModel(
-      model: "assets/batik_model.tflite",
-      labels: "assets/labels.txt",
-      numThreads: 1,
-    );
-  }
+  // Melakukan klasifikasi gambar
+  static Future<List<Map<String, dynamic>>?> classifyImage(File imageFile) async {
+    if (_interpreter == null || _labels == null) return null;
 
-  classifyImage(File image) async {
-    var output = await Tflite.runModelOnImage(
-      path: image.path,
-      imageMean: 0.0,
-      imageStd: 255.0,
-      numResults: 2,
-      threshold: 0.2,
-      asynch: true,
-    );
-
-    setState(() {
-      _loading = false;
-      _outputs = output;
-    });
-  }
-
-  @override
-  void dispose() {
-    Tflite.close();
-    super.dispose();
-  }
-
-  pickImage() async {
-    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    var imageBytes = await imageFile.readAsBytes();
+    img.Image? image = img.decodeImage(imageBytes);
     if (image == null) return null;
-    setState(() {
-      _loading = true;
-      _image = File(image.path);
-    });
-    classifyImage(_image!);
+
+    var inputShape = _interpreter!.getInputTensor(0).shape;
+    int height = inputShape[1];
+    int width = inputShape[2];
+
+    img.Image resizedImage = img.copyResize(image, width: width, height: height);
+
+    var inputType = _interpreter!.getInputTensor(0).type;
+    var input = List.generate(1, (i) => List.generate(height, (y) => List.generate(width, (x) {
+      final pixel = resizedImage.getPixel(x, y);
+      if (inputType == TensorType.float32) {
+        return [
+          (pixel.r - 0.0) / 255.0,
+          (pixel.g - 0.0) / 255.0,
+          (pixel.b - 0.0) / 255.0
+        ];
+      } else {
+        return [pixel.r, pixel.g, pixel.b];
+      }
+    })));
+
+    var outputShape = _interpreter!.getOutputTensor(0).shape;
+    int numClasses = outputShape[1];
+    var output = List.generate(1, (i) => List.filled(numClasses, 0.0));
+
+    _interpreter!.run(input, output);
+    var probabilities = output[0];
+
+    double maxProb = 0;
+    int maxIndex = -1;
+    for (int i = 0; i < probabilities.length; i++) {
+      if (probabilities[i] > maxProb) {
+        maxProb = probabilities[i];
+        maxIndex = i;
+      }
+    }
+
+    if (maxIndex != -1 && maxProb >= 0.2) {
+      String label = _labels![maxIndex];
+      // Jika label punya angka di depan (misal: "0 Parang"), dipotong
+      if (label.contains(' ')) {
+         label = label.substring(label.indexOf(' ') + 1);
+      }
+      return [{"label": label, "confidence": maxProb}];
+    } else {
+      return [{"label": "Tidak dikenali", "confidence": maxProb}];
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Tensorflow Lite",
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.amber,
-        elevation: 0,
-      ), // AppBar
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _loading
-                ? Container(height: 300, width: 300)
-                : Container(
-                    margin: const EdgeInsets.all(20),
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        _image == null ? Container() : Image.file(_image!),
-                        const SizedBox(height: 20),
-                        _image == null
-                            ? Container()
-                            : _outputs != null
-                            ? Text(
-                                "Terdeteksi: ${_outputs![0]["label"]}",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                ),
-                              )
-                            : Container(child: const Text("")),
-                      ],
-                    ),
-                  ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Pick Image',
-        onPressed: pickImage,
-        child: const Icon(Icons.add_a_photo, size: 20, color: Colors.white),
-        backgroundColor: Colors.amber,
-      ),
-    ); // Scaffold
+  // Menutup interpreter untuk menghemat memori
+  static void dispose() {
+    _interpreter?.close();
   }
 }
