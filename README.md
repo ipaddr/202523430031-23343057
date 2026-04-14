@@ -19,3 +19,4 @@ Masing-masing branch berisi source code berdasarkan tugas pada minggu tersebut.
 - [Minggu 3](../../tree/minggu-3)
 - [Minggu 4](../../tree/minggu-4)
 - [Minggu 5 Object Detection](../../tree/flutter-object-detection)
+- [Minggu 7 Automasi RPA](../../tree/automasi-rpa)
