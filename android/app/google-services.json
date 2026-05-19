@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1053943487939",
+    "project_id": "auklus-f9d97",
+    "storage_bucket": "auklus-f9d97.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053943487939:android:6aa737bdf76d41566a7176",
+        "android_client_info": {
+          "package_name": "com.example.auklus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIUr4hYEIL6h07ZE-Xb-i2rtpzc5EMnTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
