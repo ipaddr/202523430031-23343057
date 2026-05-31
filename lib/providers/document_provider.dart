@@ -105,6 +105,11 @@ class DocumentProvider extends ChangeNotifier {
       final result = await GeminiService.cleanText(_extractedText);
       _cleanedText = result['cleaned_text'] ?? _extractedText;
       _requestText = result['request_text'] ?? _extractedText;
+      // --- gunakan judul dari gemini sebagai nama file ---
+      final title = result['document_title'] ?? '';
+      if (title.isNotEmpty && title != 'Dokumen') {
+        _fileName = title;
+      }
       _setStatus(DocumentStatus.ready);
     } catch (e) {
       _setError('Gagal membersihkan teks: ${e.toString()}');

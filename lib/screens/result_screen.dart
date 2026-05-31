@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../theme.dart';
 import '../providers/analysis_provider.dart';
 import '../providers/history_provider.dart';
+import '../providers/document_provider.dart';
 
 class ResultScreen extends StatefulWidget {
   // --- scanid dari historyscreen, null jika scan baru ---
@@ -19,12 +20,21 @@ class _ResultScreenState extends State<ResultScreen> {
   bool _loadingFromFirestore = false;
   String? _loadError;
   DateTime? _scanDate;
+  String _documentTitle = 'HASIL ANALISIS';
 
   @override
   void initState() {
     super.initState();
     if (widget.scanId != null) {
       _loadFromFirestore();
+    } else {
+      // --- scan baru, ambil judul dari document provider ---
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final doc = context.read<DocumentProvider>();
+        if (doc.fileName.isNotEmpty && doc.fileName != 'Dokumen') {
+          setState(() => _documentTitle = doc.fileName);
+        }
+      });
     }
   }
 
@@ -42,6 +52,7 @@ class _ResultScreenState extends State<ResultScreen> {
       final data = doc.data()!;
       final ts = data['createdAt'];
       _scanDate = ts is Timestamp ? ts.toDate() : DateTime.now();
+      _documentTitle = data['fileName'] as String? ?? 'HASIL ANALISIS';
 
       final cleanedText = data['cleanedText'] as String? ?? '';
       final results = (data['results'] as List<dynamic>?) ?? [];
@@ -340,10 +351,10 @@ class _ResultScreenState extends State<ResultScreen> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'HASIL ANALISIS',
-                      style: TextStyle(
+                      _documentTitle,
+                      style: const TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 15,
                         fontWeight: FontWeight.w600,

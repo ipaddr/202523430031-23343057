@@ -6,7 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class GeminiService {
   static String get _apiKey => dotenv.env['GEMINI_API_KEY'] ?? '';
   static const String _url =
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent';
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
   // --- bersihkan teks ocr dengan gemini ai ---
   static Future<Map<String, String>> cleanText(String extractedText) async {
@@ -16,7 +16,11 @@ class GeminiService {
 
     // --- lewati jika teks kosong ---
     if (extractedText.trim().isEmpty) {
-      return {'cleaned_text': extractedText, 'request_text': extractedText};
+      return {
+        'document_title': 'Dokumen',
+        'cleaned_text': extractedText,
+        'request_text': extractedText,
+      };
     }
 
     final String prompt =
@@ -55,6 +59,7 @@ Setiap klausul dipisahkan oleh newline (\\n). Satu kalimat = satu baris.
 
 Gunakan format output JSON persis seperti berikut:
 {
+  "document_title": "Judul singkat dokumen (maks 5 kata, contoh: Kontrak Sewa Ruko, NDA Kerjasama, Perjanjian Kerja). Jika tidak ditemukan judul, buat dari konteks isi dokumen.",
   "cleaned_text": "Seluruh dokumen utuh dari awal hingga akhir yang sudah diperbaiki typo dan formatnya.",
   "request_text": "Hanya kalimat-kalimat klausul hukum, satu per baris, tanpa judul/kop/identitas/penutup. Kata-kata 100% identik dengan cleaned_text."
 }
@@ -97,6 +102,9 @@ $extractedText
             try {
               final parsedJson = jsonDecode(jsonText);
               return {
+                'document_title':
+                    parsedJson['document_title']?.toString().trim() ??
+                    'Dokumen',
                 'cleaned_text':
                     parsedJson['cleaned_text']?.toString().trim() ??
                     extractedText,
@@ -107,22 +115,35 @@ $extractedText
             } catch (e) {
               debugPrint('gemini json parse error: $e');
               return {
+                'document_title': 'Dokumen',
                 'cleaned_text': jsonText.trim(),
                 'request_text': jsonText.trim(),
               };
             }
           }
         }
-        return {'cleaned_text': extractedText, 'request_text': extractedText};
+        return {
+          'document_title': 'Dokumen',
+          'cleaned_text': extractedText,
+          'request_text': extractedText,
+        };
       } else {
         debugPrint(
           'gemini api error: ${response.statusCode} - ${response.body}',
         );
-        return {'cleaned_text': extractedText, 'request_text': extractedText};
+        return {
+          'document_title': 'Dokumen',
+          'cleaned_text': extractedText,
+          'request_text': extractedText,
+        };
       }
     } catch (e) {
       debugPrint('gemini api exception: $e');
-      return {'cleaned_text': extractedText, 'request_text': extractedText};
+      return {
+        'document_title': 'Dokumen',
+        'cleaned_text': extractedText,
+        'request_text': extractedText,
+      };
     }
   }
 }
